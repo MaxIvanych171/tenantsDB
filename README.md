@@ -8,50 +8,44 @@
 | Поле             | Тип            | Описание                       |
 |------------------|----------------|-------------------------------|
 | TenantID         | int (PK)       | Уникальный идентификатор      |
-| Name             | nvarchar(50)   | ФИО жильца                    |
-| Address          | nvarchar(100)  | Адрес                         |
-| ContactNumber    | nvarchar(20)   | Телефон                       |
-| RentAmount       | decimal (10, 2)| Плата за аренду               |
-| LeaseStartDate   | date           | Дата Начала Аренды            |
-| LeaseEndDate     | date           | Дата Окончания Аренды         |
+| Last_Name        | nvarchar(50)   | Фамилия жильца                |
+| First_Name       | nvarchar(50)   | Имя жильца                    |
+| Date_of_Birth    | date           | Дата рождения                 |
+| Phone_Number     | decimal (10, 2)| Номер телефона                |
+| Gender           | date           | Пол                           |
 
 
-### Payments
+### Apartments 
 | Поле             | Тип            | Описание                       |
 |------------------|----------------|--------------------------------|
-| PaymentID        | int (PK)       | Уникальный идентификатор       |
-| TenantID         | int (FK)       | ID жильца                      |
-| PaymentDate      | date           | Дата платежа                   |
-| AmountPaid       | decimal(10, 2) | Сумма платежа                  |
-
-### Buildings
-| Поле             | Тип            | Описание                       |
-|------------------|----------------|--------------------------------|
-| BuildingID       | int (PK)       | Уникальный идентификатор       |
+| Apartment_ID     | int (PK)       | Уникальный идентификатор       |
+| Apartment_Number | int (FK)       | Номер квартиры                 |
 | Address          | nvarchar(100)  | Адрес                          |
-| NumFloors        | int            | Количество этажей              |
+| Area             | decimal(10, 2) | Площадь                        |
 
-### Apartments
+### Residence 
 | Поле             | Тип            | Описание                       |
 |------------------|----------------|--------------------------------|
-| ApartmentID      | int (PK)       | Уникальный идентификатор       |
-| ApartmentNumber  | nvarchar(10)   | Номер квартиры                 |
-| BuildingID       | int (FK)       | Внешний ключ, ссылающийся на Buildings(BuildingID) |
-| NumRooms         | date           | Количество комнат              |
-| FloorNumber      | nvarchar(20)   | Номер этажа                    |
+| Residence_ID     | int (PK)       | Уникальный идентификатор       |
+| Tenant_ID        | nvarchar(100)  | id жильца                      |
+| Apartment_ID     | int            | id квартиры                    |
+| Period           | nvarchar(100)  | Срок проживания                |
+| Check_in_Date    | date           | Дата заселения                 |
+| Check_out_Date   | date           | Дата выселения                 |
 
 ```sql
-INSERT INTO Tenants (TenantID, Name, Address, ContactNumber, RentAmount, LeaseStartDate, LeaseEndDate)
+INSERT INTO Tenants (Last_Name, First_Name, Date_of_Birth, Phone_Number, Gender)
 VALUES 
-(1, 'Иванов Иван Иванович', 'ул. Пушкина, д. 10, кв. 5', '123-456-7890', 1000.00, '2022-01-01', '2023-01-01');
+('Пискунов', 'Вадим Иванович', '1997-04-08', '89517835930', 'Male'),
+('Орешкина', 'Ирина Анатольевна', '1978-09-04', '89093279161', 'Female');
 
-INSERT INTO Payments (PaymentID, TenantID, PaymentDate, Amount)
+INSERT INTO Apartments(Apartment_Number, Address, Area)
 VALUES 
-(1, 1, '2022-04-01', 1000.00);
+(17, 'Улица Пушкинская 152, кв. 17', 80.50),
+(4, 'Переулок Халтуринский 18, кв. 4', 125.30);
 
-INSERT INTO Buildings (BuildingID, Address, NumFloors) VALUES
-(1, 'ул. Ленина, д. 10', 5);
-
-INSERT INTO Apartments (ApartmentID, ApartmentNumber, BuildingID, NumRooms, FloorNumber) VALUES
-(1, '1A', 1, 3, 1);
+INSERT INTO Residence(Tenant_ID, Apartment_ID, Period, Check_in_Date, Check_out_Date)
+VALUES 
+(1, 1, 'timing', '2023-05-01', '2024-05-01'),
+(2, 2, 'regularly', '2023-02-15', '2050-05-01');
 ```
